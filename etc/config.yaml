@@ -2,4 +2,4 @@ server:
   addr: "localhost"
   port: "1979"
 database:
-  name: "alo"
+  type: "postgres" # or mongo
