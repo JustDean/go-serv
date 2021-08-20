@@ -15,6 +15,7 @@ func SetStore(ConfigPath string) *Store {
 	}
 
 	s.router = mux.NewRouter()
+	s.setDatabase()
 
 	return s
 }
@@ -25,7 +26,7 @@ func RunServer(s *Store) {
 		panic(err)
 	}
 
-	fmt.Printf("Server is starting on %s\n", address)
+	fmt.Printf("server is starting on %s\n", address)
 
 	srv := &http.Server{
 		Handler: s.router,

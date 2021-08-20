@@ -2,4 +2,8 @@ server:
   addr: "localhost"
   port: "1979"
 database:
-  type: "postgres" # or mongo
+  host: "localhost"
+  port: "5432"
+  user: "gopher"
+  password: "gogo123"
+  database: "gotest"

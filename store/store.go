@@ -2,14 +2,15 @@ package store
 
 import (
 	"fmt"
+	"github.com/go-pg/pg/v10"
 	"github.com/gorilla/mux"
 	"net/http"
 )
 
 type Store struct {
 	Config
-	router *mux.Router
-	//DB *pg.DB
+	router   *mux.Router
+	Database *pg.DB
 }
 
 func (s *Store) setConfig(ConfigPath string) (*Store, error) {
@@ -38,11 +39,15 @@ func (s *Store) AddRoute(path string, f func(http.ResponseWriter, *http.Request,
 	return s
 }
 
-//func  (s *Store) setDatabase(DatabaseConfigPath string) *Store {
-//	//dbConfig :=
-//	s.DB = pg.Connect(&pg.Options{
-//		User: "gopher",
-//	})
-//
-//	return s
-//}
+func (s *Store) setDatabase() *Store {
+	databaseOptions := &pg.Options{
+		Addr:     fmt.Sprintf("%s:%s", s.Config.Database.Host),
+		User:     s.Config.Database.User,
+		Password: s.Config.Database.Password,
+		Database: s.Config.Database.Database,
+	}
+
+	s.Database = pg.Connect(databaseOptions)
+
+	return s
+}
