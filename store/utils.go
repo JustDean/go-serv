@@ -1,8 +1,10 @@
 package store
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
+	"io"
 	"log"
 	"net/http"
 )
@@ -15,7 +17,7 @@ func SetStore(ConfigPath string) *Store {
 	}
 
 	s.router = mux.NewRouter()
-	s.setDatabase()
+	s.setMongo()
 
 	return s
 }
@@ -34,4 +36,19 @@ func RunServer(s *Store) {
 	}
 
 	log.Fatal(srv.ListenAndServe())
+}
+
+func ParseJSON(request *http.Request) (map[string]string, error) {
+	var res map[string]string
+	b, err := io.ReadAll(request.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(b, &res)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
 }
