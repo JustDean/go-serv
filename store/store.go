@@ -28,7 +28,8 @@ func (s *Store) setConfig(ConfigPath string) (*Store, error) {
 
 func (s *Store) setMongo() *Store {
 	uri := fmt.Sprintf("mongodb://%s:%s", s.Config.Database.Host, s.Config.Database.Port)
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(uri))
@@ -38,7 +39,8 @@ func (s *Store) setMongo() *Store {
 	s.Database = client
 
 	defer func() {
-		if err = s.Database.Disconnect(ctx); err != nil {
+		err = s.Database.Disconnect(ctx)
+		if err != nil {
 			panic(err)
 		}
 	}()
@@ -46,7 +48,7 @@ func (s *Store) setMongo() *Store {
 	if err := s.Database.Ping(ctx, readpref.Primary()); err != nil {
 		panic(err)
 	}
-	fmt.Println("Successfully connected and pinged.")
+	fmt.Println("Database: successfully connected and pinged.")
 
 	return s
 }
