@@ -12,7 +12,11 @@ type Config struct {
 		Port string
 	}
 	Database struct {
-		Name string
+		Host     string
+		Port     string
+		User     string
+		Password string
+		Database string
 	}
 }
 

@@ -2,13 +2,23 @@ package main
 
 import (
 	"go-serv/store"
-	"go-serv/test-app"
+	"net/http"
 )
 
 func main() {
 	s := store.SetStore("etc/config.yaml")
 
-	test_app.AddPaths(s)
+	s.GET("/", func(writer http.ResponseWriter, request *http.Request, s *store.Store) {
+		_, err := store.ParseJSON(request)
+		if err != nil {
+			panic(err)
+		}
+
+		err = store.ReturnJSON(writer, map[string]string{"hello": "alone"})
+		if err != nil {
+			panic(err)
+		}
+	})
 
 	store.RunServer(s)
 }
