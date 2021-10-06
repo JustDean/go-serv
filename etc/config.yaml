@@ -2,8 +2,8 @@ server:
   addr: "localhost"
   port: "1979"
 database:
-  host: "localhost"
-  port: "27017"
-#  user: "gopher"
-#  password: "gogo123"
-#  database: "gotest"
+  addr: "localhost"
+  port: "5432"
+  user: "gopher"
+  password: "gogo123"
+  database: "gotest"
