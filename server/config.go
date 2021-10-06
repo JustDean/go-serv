@@ -1,4 +1,4 @@
-package store
+package server
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ type Config struct {
 		Port string
 	}
 	Database struct {
-		Host     string
+		Addr     string
 		Port     string
 		User     string
 		Password string
@@ -20,7 +20,7 @@ type Config struct {
 	}
 }
 
-func (c *Config) readConf(filename string) (*Config, error) {
+func (c *Config) ReadConfig(filename string) (*Config, error) {
 	buf, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return nil, err
@@ -28,7 +28,7 @@ func (c *Config) readConf(filename string) (*Config, error) {
 
 	err = yaml.Unmarshal(buf, c)
 	if err != nil {
-		return nil, fmt.Errorf("in file %q: %v", filename, err)
+		return nil, fmt.Errorf("error occured in file %q: %v", filename, err)
 	}
 
 	return c, nil
